@@ -1,0 +1,17 @@
+{
+  "name": "@sandersland/csv",
+  "version": "0.1.0",
+  "description": "simple module for working with csv files",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc"
+  },
+  "keywords": [
+    "csv",
+    "table"
+  ],
+  "author": "Steffen Andersland",
+  "dependencies": {
+    "@types/node": "^15.0.2"
+  }
+}
