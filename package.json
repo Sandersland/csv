@@ -1,6 +1,6 @@
 {
   "name": "@sandersland/csv",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "simple module for working with csv files",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -12,7 +12,7 @@
     "table"
   ],
   "author": "Steffen Andersland",
-  "dependencies": {
+  "devDependencies": {
     "@types/node": "^15.0.2"
   }
 }
