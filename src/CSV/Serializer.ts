@@ -1,7 +1,8 @@
 class CSVSerializer {
     private static csvSafeDelim = /,(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)/;
     private static csvSafeString (column: any) {
-        return typeof column === "string" ? `"${column}"` : column;
+        if (typeof column === "string" && /\s/.test(column)) return `"${column}"`;
+        return column;
     }
 
     private static serializeRow(csvRow: string, columns: string[]) {
@@ -26,13 +27,28 @@ class CSVSerializer {
 
     static deserialize(data: {[key: string]: any}[]) {
         if (!data[0]) return "";
-        const head = Object.keys(data[0]);
+        const head: string[] = [];
         const values = data.reduce((acc: any[], row: any, i: number) => {
+            for (let name in row) {
+                if (head.includes(name)) continue;
+                head.push(name);
+            }
             acc[i] = Object.values(row).map(this.csvSafeString);
             return acc;
         }, []);
-        const rows = [head, ...values];
-        return rows.map(row => row.join(",")).join("\n") + "\n";
+
+        return [head, ...values].map(row => {
+            let rowString = "";
+            for (let i = 0; i < head.length; i++) {
+                const value = row[i];
+                if (i + 1 === head.length) {
+                    rowString += value || "";
+                    continue;
+                } 
+                rowString += value ? `${value},` : ',';
+            }
+            return rowString;
+        }).join("\n") + "\n";
     }
 }
 

@@ -98,9 +98,11 @@ class Table implements Iterator<Row> {
     }
 
     valueOf(column: string, value: any) {
-        return this.rows.filter(row => {
+        const constructor = Object.getPrototypeOf(this).constructor;
+        const rows = this.rows.filter(row => {
             return row.value[column] == value;
         });
+        return new constructor(rows);
     }
     
     forEach(callback: (data: {[key: string]: any}, index: number) => void): void {
@@ -141,9 +143,9 @@ class Table implements Iterator<Row> {
     }
 
     concat<T extends Table>(other: T) {
+        const constructor = Object.getPrototypeOf(this).constructor;
         const rows = this.rows.concat(other.rows);
-        const factory = Object.getPrototypeOf(this).constructor
-        return new factory(rows);
+        return new constructor(rows);
     }
 }
 

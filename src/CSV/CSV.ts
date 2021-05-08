@@ -50,6 +50,11 @@ class CSV extends Table {
         return chunk(this.data, chunkSize).map(CSV.create);
     }
 
+    static fromString(csvString: string) {
+        const data = CSVSerializer.serialize(csvString);
+        return new CSV(data);
+    }
+
     toString() {
         return CSVSerializer.deserialize(this.data);
     }
