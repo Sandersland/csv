@@ -1,11 +1,14 @@
 {
   "name": "@sandersland/csv",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "simple module for working with csv files",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "main": "dist/csv/index.js",
+  "types": "dist/csv/index.d.ts",
   "scripts": {
-    "build": "tsc"
+    "prebuild": "node -e \"require('fs').rmdir('dist', {recursive: true}, () => {});\"",
+    "build:dev": "tsc",
+    "build": "tsc --project tsconfig.production.json",
+    "test": "npm run build:dev && jest ./dist/tests"
   },
   "keywords": [
     "csv",
@@ -15,8 +18,10 @@
   "devDependencies": {
     "@babel/core": "^7.14.0",
     "@babel/preset-env": "^7.14.1",
+    "@babel/preset-typescript": "^7.13.0",
+    "@types/jest": "^26.0.23",
     "@types/node": "^15.0.2",
     "babel-jest": "^26.6.3",
-    "jest": "^26.6.3"
+    "jest": "^26.5.0"
   }
 }
