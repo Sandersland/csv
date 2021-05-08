@@ -10,6 +10,9 @@
     "build": "tsc --project tsconfig.production.json",
     "test": "npm run build:dev && jest ./dist/tests"
   },
+  "files": [
+    "dist/csv"
+  ],
   "keywords": [
     "csv",
     "table"
