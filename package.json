@@ -8,8 +8,7 @@
     "prebuild": "node -e \"require('fs').rmdir('dist', {recursive: true}, () => {});\"",
     "build:dev": "tsc",
     "build": "tsc --project tsconfig.production.json",
-    "test": "npm run build:dev && jest ./dist/tests",
-    "publish": "npm run build && npm publish"
+    "test": "npm run build:dev && jest ./dist/tests"
   },
   "files": [
     "dist/csv"
