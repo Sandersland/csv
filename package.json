@@ -9,7 +9,7 @@
     "build:dev": "tsc",
     "build": "tsc --project tsconfig.production.json",
     "test": "npm run build:dev && jest ./dist/tests",
-    "publish": "npm run build && npm deploy"
+    "publish": "npm run build && npm publish"
   },
   "files": [
     "dist/csv"
