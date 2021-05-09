@@ -1,6 +1,6 @@
 {
   "name": "@sandersland/csv",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "simple module for working with csv files",
   "main": "dist/csv/index.js",
   "types": "dist/csv/index.d.ts",

@@ -186,6 +186,20 @@ class Table implements Iterator<Row> {
         const merger = new TableMerger<Table>(this, other);
         return merger.merge(leftOn, rightOn, Join.LEFT);
     }
+
+    rename(columns: {[key: string]: string}) {
+        const constructor = Object.getPrototypeOf(this).constructor;
+        for (const key in columns) {
+            if (this.columns.includes(key)) continue;
+            throw Error(`${key} is not a column of this table`);
+        }
+
+        const rows = this.map((row) => Object.keys(row).reduce((acc, col) => {
+            const name = columns[col] ? columns[col] : col;
+            return Object.assign(acc, {[name]: row[col]});
+        }, {} as {[key: string]: any}));
+        return new constructor(rows);
+    }
 }
 
 export default Table;
