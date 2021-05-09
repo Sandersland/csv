@@ -1,13 +1,14 @@
 {
   "name": "@sandersland/csv",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "simple module for working with csv files",
   "main": "dist/csv/index.js",
   "types": "dist/csv/index.d.ts",
   "scripts": {
-    "prebuild": "node -e \"require('fs').rmdir('dist', {recursive: true}, () => {});\"",
+    "prebuild": "node -e \"require('fs').rmdirSync('dist', {recursive: true});\"",
     "build:dev": "tsc",
     "build": "tsc --project tsconfig.production.json",
+    "dev": "tsc --watch",
     "test": "npm run build:dev && jest ./dist/tests"
   },
   "files": [

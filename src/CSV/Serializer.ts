@@ -25,17 +25,23 @@ class CSVSerializer {
         return results;
     }
 
-    static deserialize(data: {[key: string]: any}[]) {
+    static deserialize(data: {[key: string]: any}[], numRows: number = 1000) {
         if (!data[0]) return "";
         const head: string[] = [];
-        const values = data.reduce((acc: any[], row: any, i: number) => {
-            for (let name in row) {
+
+
+        for (let i = 0; i < numRows; i++) {
+            // accumulate head based on subset of rows in data
+            if (!data[i]) break;
+            for (let name in data[i]) {
                 if (head.includes(name)) continue;
                 head.push(name);
             }
-            acc[i] = Object.values(row).map(this.csvSafeString);
-            return acc;
-        }, []);
+        }
+
+        const values = data.map((row: any) => head.map((column) => {
+            return row[column] ? this.csvSafeString(row[column]): "";
+        }));
 
         return [head, ...values].map(row => {
             let rowString = "";
@@ -45,7 +51,7 @@ class CSVSerializer {
                     rowString += value || "";
                     continue;
                 } 
-                rowString += value ? `${value},` : ',';
+                rowString += value ? `${value|| ""},` : ',';
             }
             return rowString;
         }).join("\n") + "\n";

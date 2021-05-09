@@ -43,8 +43,8 @@ describe("constructors", () => {
       expect(csv.columns).toEqual(["first", "last", "age", "email"]);
       expect(csv.indexOf(0).value.first).toEqual("Steffen");
     });
-  })
-})
+  });
+});
 
 describe("accessors", () => {
   const data = [
@@ -53,16 +53,15 @@ describe("accessors", () => {
   ]
   const csv = new CSV(data);
 
-  test("csv indexOf has value", () => {
+  test("csv indexOf returns a row", () => {
     expect(csv.indexOf(0).value.name).toBe("Steffen Andersland");
     expect(csv.indexOf(1).value.name).toBe("Christine Vogel");
   });
 
-  test("csv", () => {
+  test("csv valueOf returns an instance of CSV with a filtered set of rows", () => {
     const filtered = csv.valueOf("age", 30);
     expect(filtered).toBeInstanceOf(CSV);
     expect(filtered.length).toBe(1);
     expect(filtered.indexOf(0).value.name).toBe("Christine Vogel");
   });
-  
-})
+});

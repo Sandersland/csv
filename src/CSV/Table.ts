@@ -37,6 +37,40 @@ export class Row {
     }
 }
 
+enum Join {
+    LEFT = "left",
+    RIGHT = "right",
+    OUTER = "outer"
+}
+
+interface ITableMerger<T extends Table> {
+    left: T;
+    right: T;
+    merge(leftOn: string, rightOn:string, join: Join): T;
+}
+
+class TableMerger<T extends Table> implements ITableMerger<T> {
+    constructor(public left: T, public right: T) {}
+
+    merge(leftOn: string, rightOn: string, join: Join = Join.LEFT) {
+        // TODO: determine if there are any rows where the leftOn or the rightOn have duplicate values
+        // TODO: sort out what the join method based on join arg
+        const constructor = Object.getPrototypeOf(this.left).constructor;
+        const rows = this.left.map((row) => {
+            const value: {[key: string]: any} = {};
+            const right = this.right.valueOf(rightOn, row[leftOn]).indexOf(0);
+            if (!right) return row;
+            for (let key in right.value) {
+                if (row[key]) continue;
+                value[key] = right.value[key];
+            }
+            return {...row, ...value};
+        });
+        return new constructor(rows);
+    }
+
+}
+
 class Table implements Iterator<Row> {
     protected rows: Row[];
     protected _columns: string[];
@@ -146,6 +180,11 @@ class Table implements Iterator<Row> {
         const constructor = Object.getPrototypeOf(this).constructor;
         const rows = this.rows.concat(other.rows);
         return new constructor(rows);
+    }
+
+    merge<T extends Table>(other: T, leftOn: string, rightOn: string = leftOn) {
+        const merger = new TableMerger<Table>(this, other);
+        return merger.merge(leftOn, rightOn, Join.LEFT);
     }
 }
 
