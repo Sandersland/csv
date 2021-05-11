@@ -18,21 +18,19 @@ class CSVSerializer {
         const results = [];
         const rows = csvString.split('\n');
         const header = rows[0].split(',').map(s => s.trim());
-        for (let j = 1; j < rows.length; j++) {
-            const row = this.serializeRow(rows[j], header);
+        for (let i = 1; i < rows.length; i++) {
+            if (!rows[i] && i + 1 === rows.length) continue; 
+            const row = this.serializeRow(rows[i], header);
             results.push(row);
         }
         return results;
     }
 
     static deserialize(data: {[key: string]: any}[], numRows: number = 1000) {
-        if (!data[0]) return "";
         const head: string[] = [];
-
-
         for (let i = 0; i < numRows; i++) {
             // accumulate head based on subset of rows in data
-            if (!data[i]) break;
+            if (!data[i]) continue;
             for (let name in data[i]) {
                 if (head.includes(name)) continue;
                 head.push(name);
@@ -41,7 +39,7 @@ class CSVSerializer {
 
         const values = data.map((row: any) => head.map((column) => {
             return row[column] ? this.csvSafeString(row[column]): "";
-        }));
+        }))
 
         return [head, ...values].map(row => {
             let rowString = "";
