@@ -9,7 +9,7 @@ class CSVSerializer {
         const data = csvRow.split(this.csvSafeDelim);
         const row: {[key: string]: any} = {};
         for (let i = 0; i < data.length; i++) {
-            row[columns[i]] = data[i].replace(/\"/g, '').trim();
+            row[columns[i]] = data[i].replace(/"/g, '""').trim();
         }
         return row;
     }

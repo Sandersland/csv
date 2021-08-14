@@ -11,7 +11,20 @@ describe("serializer methods", () => {
             }
         ]
         expect(results).toEqual(expected);
-    })
+    });
+
+    test ("serialze method properly serializes strings that include quotes", () => {
+        const csvString = `name,age,quote\nSteffen Andersland,29,"Make thing do"\n`;
+        const results = CSVSerializer.serialize(csvString);
+        const expected = [
+            {
+                name: "Steffen Andersland",
+                age: "29",
+                quote: `"\"Make thing do\""`
+            }
+        ]
+        expect(results).toEqual(expected);
+    });
 
     test("deserialize returns a correctly formated csv string", () => {
         const data = [{
